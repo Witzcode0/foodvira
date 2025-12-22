@@ -117,3 +117,5 @@ change dir and go to the Fudvira dir
 
  install all modules and packages from requirments.txt
  (myvenv) ...\(specific folder)\Fudvirapy> pip install -r requirements.txt 
+
+https://docs.djangoproject.com/en/6.0/topics/db/models/

@@ -1,0 +1,17 @@
+from django.db import models
+import uuid
+
+# Create your models here.
+class BaseClass(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4())
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+class Contact(BaseClass):
+    name = models.CharField(max_length=255, null=False, blank=False)
+    email = models.EmailField(max_length=255, null=False, blank=False)
+    message = models.Text()
+    
