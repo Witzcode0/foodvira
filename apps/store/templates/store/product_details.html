@@ -1,0 +1,84 @@
+{% extends 'store/base.html' %}
+{% block title %}
+Product details
+{% endblock %}
+
+{% block body %}
+<section class="max-w-7xl mx-auto px-4 py-10">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+    <!-- LEFT: Product Images -->
+    <div>
+      <div class="bg-white rounded-xl shadow p-6">
+        <img
+          src="https://via.placeholder.com/500"
+          alt="Product Image"
+          class="w-full h-[420px] object-contain rounded-lg"
+        />
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="flex gap-3 mt-4">
+        <img class="w-20 h-20 object-cover rounded-lg border cursor-pointer" src="https://via.placeholder.com/100" />
+        <img class="w-20 h-20 object-cover rounded-lg border cursor-pointer" src="https://via.placeholder.com/100" />
+        <img class="w-20 h-20 object-cover rounded-lg border cursor-pointer" src="https://via.placeholder.com/100" />
+      </div>
+    </div>
+
+    <!-- RIGHT: Product Details -->
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800">
+        {{product}}
+      </h1>
+
+      <!-- Rating
+      <div class="flex items-center gap-2 mt-2">
+        <div class="flex text-yellow-400">
+          ★ ★ ★ ★ ☆
+        </div>
+        <span class="text-sm text-gray-500">(4.5 / 5)</span>
+      </div> -->
+
+      <!-- Price -->
+      <div class="mt-4">
+        <span class="text-3xl font-semibold text-green-600">₹{{product.price}}</span>
+        <span class="line-through text-gray-400 ml-3">₹{{ product.price|add:100 }}</span>
+      </div>
+
+      <!-- Description -->
+      <p class="mt-4 text-gray-600 leading-relaxed">
+        {{product.content}}
+      </p>
+
+      <!-- Quantity -->
+      <div class="mt-6">
+        <h3 class="font-semibold mb-2">Quantity</h3>
+        <div class="flex items-center gap-4">
+          <button class="w-10 h-10 border rounded-lg">-</button>
+          <span class="text-lg font-semibold">1</span>
+          <button class="w-10 h-10 border rounded-lg">+</button>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-8 flex gap-4">
+        <button class="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700">
+          Add to Cart
+        </button>
+        <button class="flex-1 border border-green-600 text-green-600 py-3 rounded-xl font-semibold hover:bg-green-50">
+          Buy Now
+        </button>
+      </div>
+
+      <!-- Highlights -->
+      <div class="mt-8 grid grid-cols-2 gap-4 text-sm text-gray-600">
+        <p>✔ 100% Natural</p>
+        <p>✔ No Preservatives</p>
+        <p>✔ Freshly Ground</p>
+        <p>✔ PAN India Delivery</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
