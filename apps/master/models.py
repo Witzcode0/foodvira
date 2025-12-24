@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from django.utils.text import slugify
 
 
 class BaseClass(models.Model):
@@ -32,3 +33,55 @@ class Contact(BaseClass):
 
     def __str__(self):
         return f"{self.name} - {self.email} ({self.status})"
+    
+class BlogCategory(BaseClass):
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=120, unique=True)
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+
+    class Meta:
+        verbose_name = "Blog Category"
+        verbose_name_plural = "Blog Categories"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+    
+class Blog(BaseClass):
+    category = models.ForeignKey(
+        BlogCategory,
+        on_delete=models.CASCADE,
+        related_name='blogs'
+    )
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=220, unique=True)
+    content = models.TextField()
+    image = models.ImageField(upload_to='blogs/', blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Blog"
+        verbose_name_plural = "Blogs"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+
+from django.db import models
+
+class TeamMember(BaseClass):
+    name = models.CharField(max_length=100)
+    position = models.CharField(max_length=100)
+    bio = models.TextField(blank=True, null=True)
+    image = models.ImageField(upload_to='team/', blank=True, null=True)
+    facebook_url = models.URLField(blank=True, null=True)
+    twitter_url = models.URLField(blank=True, null=True)
+    instagram_url = models.URLField(blank=True, null=True)
+    linkedin_url = models.URLField(blank=True, null=True)
+    order = models.PositiveIntegerField(default=0, help_text="Order to display members on page")
+
+    class Meta:
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name

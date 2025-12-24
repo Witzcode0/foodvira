@@ -1,14 +1,21 @@
-from django.shortcuts import render
-from apps.master.models import Contact
+from django.shortcuts import render, get_object_or_404
+from apps.master.models import Contact, Blog, TeamMember
 from apps.products.models import Product, ProductImages
 from django.contrib import messages
 from django.shortcuts import redirect
 # Create your views here.
 def index(request):
-    return render(request, "store/index.html")
+    products = Product.objects.order_by('-created_at')[:8]   # last 8 added products
+    blogs = Blog.objects.order_by('-created_at')[:3]          # last 3 added blogs
+
+    context = {
+        'products': products,
+        'blogs': blogs
+    }
+    return render(request, "store/index.html", context)
 
 def products(request):
-    products = Product.objects.all()
+    products = Product.objects.order_by('-created_at')
     context = {
         'products':products
     }
@@ -24,10 +31,36 @@ def product_detail(request, product_id):
     return render(request, "store/product_details.html", context)
 
 def blog(request):
-    return render(request, "store/blog.html")
+    blogs  = Blog.objects.order_by('-created_at')
+    context = {
+        'blogs': blogs
+    }
+    return render(request, "store/blog.html", context)
+
+def blog_detail(request, blog_id):
+    blog = get_object_or_404(Blog, id=blog_id)
+    latest_blogs = Blog.objects.exclude(id=blog.id).order_by('-created_at')[:5]
+
+    
+    # Optional: increment view count
+    # blog.views = blog.views + 1 if blog.views else 1
+    # blog.save(update_fields=['views'])
+    
+    context = {
+        'blog': blog,
+        "latest_blogs":latest_blogs
+    }
+    return render(request, 'store/blog_detail.html', context)
 
 def about(request):
-    return render(request, "store/about.html")
+    # Get all team members ordered by the 'order' field
+    team_members = TeamMember.objects.all()
+    
+    context = {
+        'team_members': team_members
+    }
+    
+    return render(request, "store/about.html", context)
 
 def contact(request):
     if request.method == "POST":
