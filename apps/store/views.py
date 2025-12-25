@@ -22,10 +22,11 @@ def products(request):
     return render(request, "store/products.html", context)
 
 def product_detail(request, product_id):
-    # print(product_id)
-    product = Product.objects.get(id=product_id)
+    product = get_object_or_404(Product, id=product_id)
+
     context = {
-        "product": product
+        "product": product,
+        "product_images": product.images.all()  # 🔥 BEST
     }
     print(context)
     return render(request, "store/product_details.html", context)
@@ -36,6 +37,17 @@ def blog(request):
         'blogs': blogs
     }
     return render(request, "store/blog.html", context)
+
+def product_inquiry(request):
+    products = Product.objects.order_by('-created_at')[:8]   # last 8 added products
+    blogs = Blog.objects.order_by('-created_at')[:3]          # last 3 added blogs
+
+    context = {
+        'products': products,
+        'blogs': blogs
+    }
+    return render(request, "store/index.html", context)
+
 
 def blog_detail(request, blog_id):
     blog = get_object_or_404(Blog, id=blog_id)
