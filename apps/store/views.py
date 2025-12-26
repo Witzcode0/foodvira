@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from apps.master.models import Contact, Blog, TeamMember
-from apps.products.models import Product, ProductImages
+from apps.products.models import Product, ProductImages, ProductInquiry
 from django.contrib import messages
 from django.shortcuts import redirect
 # Create your views here.
@@ -38,15 +38,24 @@ def blog(request):
     }
     return render(request, "store/blog.html", context)
 
-def product_inquiry(request):
-    products = Product.objects.order_by('-created_at')[:8]   # last 8 added products
-    blogs = Blog.objects.order_by('-created_at')[:3]          # last 3 added blogs
 
-    context = {
-        'products': products,
-        'blogs': blogs
-    }
-    return render(request, "store/index.html", context)
+def product_inquiry(request):
+    if request.method == "POST":
+        product = get_object_or_404(Product, id=request.POST.get("product_id"))
+
+        ProductInquiry.objects.create(
+            product=product,
+            name=request.POST.get("name"),
+            mobile=request.POST.get("mobile"),
+            quantity=request.POST.get("quantity"),
+            message=request.POST.get("message"),
+        )
+
+        messages.success(request, "Your inquiry has been submitted successfully!")
+
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    return redirect("/")
 
 
 def blog_detail(request, blog_id):

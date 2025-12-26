@@ -7,132 +7,89 @@
 {% block body %}
 
 <section class="max-w-7xl mx-auto px-4 py-10">
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
-    <!-- ================= LEFT: PRODUCT IMAGES ================= -->
-    <div>
+  <!-- ================= GRID ================= -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+
+    <!-- =====================================================
+         LEFT COLUMN → STICKY IMAGE SECTION
+    ====================================================== -->
+    <div class="lg:sticky lg:top-24 self-start">
 
       <!-- Main Image -->
       <div class="bg-white rounded-xl shadow p-6">
-        <img id="mainProductImage" src="{{ product.image.url }}" alt="{{ product.title }}"
-          class="w-full h-[420px] object-contain rounded-lg" />
+        <img
+          id="mainProductImage"
+          src="{{ product.image.url }}"
+          alt="{{ product.title }}"
+          class="w-full h-[420px] object-contain rounded-lg"
+        />
       </div>
 
       <!-- Thumbnails -->
       {% if product_images %}
-
       <div class="flex gap-3 mt-4 overflow-x-auto">
         {% for img in product_images %}
-        <img src="{{ img.image.url }}" onclick="changeImage('{{ img.image.url }}')"
+        <img
+          src="{{ img.image.url }}"
+          onclick="changeImage('{{ img.image.url }}')"
           class="w-20 h-20 object-cover rounded-lg border cursor-pointer hover:border-green-600"
-          alt="{{ product.title }}" />
+          alt="{{ product.title }}"
+        />
         {% endfor %}
       </div>
       {% endif %}
     </div>
 
-    <!-- ================= RIGHT: PRODUCT DETAILS ================= -->
-    <div>
+    <!-- =====================================================
+         RIGHT COLUMN → SCROLLING CONTENT
+    ====================================================== -->
+    <div class="space-y-10">
 
       <!-- Title -->
-      <h1 class="text-3xl font-bold text-gray-800">
-        {{ product.title|title }}
-      </h1>
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800">
+          {{ product.title|title }}
+        </h1>
 
-      <!-- Category & Unit -->
-      <p class="text-sm text-gray-500 mt-1">
-        Category: <span class="font-medium">{{ product.category.name }}</span> |
-        Unit: <span class="font-medium">{{ product.unit }}</span>
-      </p>
+        <p class="text-sm text-gray-500 mt-1">
+          Category:
+          <span class="font-medium">{{ product.category.name }}</span> |
+          Unit:
+          <span class="font-medium">{{ product.unit }}</span>
+        </p>
 
-      <!-- Price -->
-      <div class="mt-4">
-        <span class="text-3xl font-semibold text-green-600">
-          ₹{{ product.price }}
-        </span>
-        <span class="line-through text-gray-400 ml-3">
-          ₹{{ product.price|add:100 }}
-        </span>
-      </div>
-
-      <!-- Stock -->
-      <p class="mt-2 text-sm">
-        {% if product.stock > 0 %}
-        <span class="text-green-600 font-medium">
-          In Stock ({{ product.stock }} Kg available)
-        </span>
-        {% else %}
-        <span class="text-red-600 font-medium">
-          Out of Stock
-        </span>
-        {% endif %}
-      </p>
-
-      {% if product.content %}
-      <div class="mt-4 text-gray-600 leading-relaxed space-y-3">
-        {{ product.content|title|linebreaks }}
-      </div>
-      {% endif %}
-
-      <!-- Action Buttons -->
-      <div class="mt-8 flex gap-4">
-        <button onclick="openInquiryModal()"
-          class="flex-1 bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700">
-          Inquiry Now
-        </button>
-
-        <div id="inquiryModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center">
-          <div class="bg-white w-full max-w-lg rounded-xl p-6 relative">
-
-            <!-- Close -->
-            <button onclick="closeInquiryModal()" class="absolute top-3 right-3 text-gray-400 hover:text-black text-xl">
-              ×
-            </button>
-
-            <h2 class="text-xl font-bold mb-4">Product Inquiry</h2>
-
-            <form method="post" action="{% url 'product_inquiry' %}" class="space-y-4">
-              {% csrf_token %}
-
-              <input type="hidden" name="product_id" value="{{ product.id }}">
-
-              <div>
-                <label class="text-sm font-medium">Your Name</label>
-                <input type="text" name="name" required class="w-full border rounded-lg px-3 py-2">
-              </div>
-
-              <div>
-                <label class="text-sm font-medium">Mobile Number</label>
-                <input type="tel" name="mobile" required class="w-full border rounded-lg px-3 py-2">
-              </div>
-
-              <div>
-                <label class="text-sm font-medium">Quantity Required</label>
-                <input type="text" name="quantity" class="w-full border rounded-lg px-3 py-2">
-              </div>
-
-              <div>
-                <label class="text-sm font-medium">Message</label>
-                <textarea name="message" rows="3" class="w-full border rounded-lg px-3 py-2"></textarea>
-              </div>
-
-              <button class="w-full bg-green-600 text-white py-2 rounded-lg font-semibold hover:bg-green-700">
-                Submit Inquiry
-              </button>
-            </form>
-
-          </div>
+        <div class="mt-4">
+          <span class="text-3xl font-semibold text-green-600">
+            ₹{{ product.price }}
+          </span>
+          <span class="line-through text-gray-400 ml-3">
+            ₹{{ product.price|add:100 }}
+          </span>
         </div>
 
+        <p class="mt-2 text-sm">
+          {% if product.stock > 0 %}
+            <span class="text-green-600 font-medium">
+              In Stock ({{ product.stock }} Kg available)
+            </span>
+          {% else %}
+            <span class="text-red-600 font-medium">
+              Out of Stock
+            </span>
+          {% endif %}
+        </p>
 
-        <!-- <button class="flex-1 border border-green-600 text-green-600 py-3 rounded-xl font-semibold hover:bg-green-50">
-          Buy Now
-        </button> -->
+        {% if product.content %}
+        <div class="mt-4 text-gray-600 leading-relaxed">
+          {{ product.content|linebreaks }}
+        </div>
+        {% endif %}
       </div>
 
-
+      <!-- ================= SPECIFICATIONS ================= -->
       {% if product.additional_details %}
-      <div class="mt-10">
+      <div>
         <h2 class="text-xl font-bold text-gray-800 mb-4">
           Product Specifications
         </h2>
@@ -156,24 +113,72 @@
       </div>
       {% endif %}
 
+      <!-- ================= INQUIRY FORM ================= -->
+      <div class="bg-white border rounded-2xl shadow p-8">
+        <h2 class="text-2xl font-bold mb-6 text-gray-800">
+          Product Inquiry
+        </h2>
 
+        <form method="post" action="{% url 'product_inquiry' %}" class="space-y-5">
+          {% csrf_token %}
+          <input type="hidden" name="product_id" value="{{ product.id }}">
 
-      <!-- Highlights -->
-      <div class="mt-8 grid grid-cols-2 gap-4 text-sm text-gray-600">
-        <p>✔ 100% Natural</p>
-        <p>✔ No Preservatives</p>
-        <p>✔ Freshly Ground</p>
-        <p>✔ PAN India Delivery</p>
+          <div>
+            <label class="block text-sm font-medium mb-1">Your Name</label>
+            <input
+              type="text"
+              name="name"
+              required
+              class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">Mobile Number</label>
+            <input
+              type="tel"
+              name="mobile"
+              required
+              class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">Quantity Required</label>
+            <input
+              type="text"
+              name="quantity"
+              placeholder="e.g. 10 Kg"
+              class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+            >
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium mb-1">Message</label>
+            <textarea
+              name="message"
+              rows="4"
+              class="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700"
+          >
+            Submit Inquiry
+          </button>
+        </form>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ================= JS FOR IMAGE SWITCH ================= -->
+<!-- ================= IMAGE SWITCH JS ================= -->
 <script>
-  function changeImage(imageUrl) {
-    document.getElementById("mainProductImage").src = imageUrl;
+  function changeImage(url) {
+    document.getElementById('mainProductImage').src = url;
   }
 </script>
 

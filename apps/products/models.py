@@ -57,3 +57,44 @@ class ProductImages(BaseClass):
 
     def __str__(self):
         return f"{self.product.title} Image"
+
+class ProductInquiry(BaseClass):
+    STATUS_CHOICES = (
+        ("new", "New"),
+        ("contacted", "Contacted"),
+        ("quoted", "Quoted"),
+        ("follow_up", "Follow Up"),
+        ("converted", "Converted"),
+        ("closed", "Closed"),
+    )
+
+    PRIORITY_CHOICES = (
+        ("low", "Low"),
+        ("medium", "Medium"),
+        ("high", "High"),
+    )
+      # 📊 Business Tracking
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="new"
+    )
+    priority = models.CharField(
+        max_length=20,
+        choices=PRIORITY_CHOICES,
+        default="medium"
+    )
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name="inquiries"
+    )
+    name = models.CharField(max_length=150)
+    mobile = models.CharField(max_length=20)
+    quantity = models.CharField(max_length=100, blank=True, null=True)
+    message = models.TextField(blank=True, null=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Inquiry - {self.product.title} ({self.name})"
