@@ -1,7 +1,19 @@
 from django.db import models
 import uuid
 from django.utils.text import slugify
+import os
 
+
+def upload_with_uuid(instance, filename):
+    """
+    Save file as <uuid>.<extension> inside model-specific folder
+    """
+    ext = filename.split('.')[-1]
+
+    # model name based folder
+    model_name = instance.__class__.__name__.lower()
+
+    return f"{model_name}/{instance.id}.{ext}"
 
 class BaseClass(models.Model):
     id = models.UUIDField(
@@ -57,7 +69,7 @@ class Blog(BaseClass):
     title = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True)
     content = models.TextField()
-    image = models.ImageField(upload_to='blogs/', blank=True, null=True)
+    image = models.ImageField(upload_to=upload_with_uuid)
 
     class Meta:
         verbose_name = "Blog"
@@ -67,7 +79,6 @@ class Blog(BaseClass):
     def __str__(self):
         return self.title
 
-from django.db import models
 
 class TeamMember(BaseClass):
     name = models.CharField(max_length=100)

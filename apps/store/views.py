@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from apps.master.models import Contact, Blog, TeamMember
-from apps.products.models import Product, ProductImages
+from apps.products.models import Product, ProductImages, ProductInquiry, Category
 from django.contrib import messages
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
 # Create your views here.
 def index(request):
     products = Product.objects.order_by('-created_at')[:8]   # last 8 added products
@@ -15,38 +16,77 @@ def index(request):
     return render(request, "store/index.html", context)
 
 def products(request):
-    products = Product.objects.order_by('-created_at')
+    category_id = request.GET.get("category")
+
+    categories = Category.objects.all()
+
+    product_list = Product.objects.order_by("-created_at")
+
+    # ✅ Filter by category if selected
+    if category_id:
+        product_list = product_list.filter(category_id=category_id)
+
+    paginator = Paginator(product_list, 12)  # products per page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'products':products
+        "categories": categories,
+        "products": page_obj.object_list,
+        "page_obj": page_obj,
+        "selected_category": category_id,
     }
     return render(request, "store/products.html", context)
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
 
+    product_images = ProductImages.objects.filter(product=product)
+
+    # ✅ Related products (same category, exclude current)
+    related_products = Product.objects.filter(
+        category=product.category
+    ).exclude(id=product.id).order_by("-created_at")[:4]
+
     context = {
         "product": product,
-        "product_images": product.images.all()  # 🔥 BEST
+        "product_images": product_images,
+        "related_products": related_products,
     }
-    print(context)
-    return render(request, "store/product_details.html", context)
+    return render(request, "store/product_detail.html", context)
+
 
 def blog(request):
-    blogs  = Blog.objects.order_by('-created_at')
+    blog_list = Blog.objects.order_by("-created_at")
+
+    paginator = Paginator(blog_list, 6)  # 👈 blogs per page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'blogs': blogs
+        "blogs": page_obj.object_list,
+        "page_obj": page_obj,
     }
     return render(request, "store/blog.html", context)
 
-def product_inquiry(request):
-    products = Product.objects.order_by('-created_at')[:8]   # last 8 added products
-    blogs = Blog.objects.order_by('-created_at')[:3]          # last 3 added blogs
 
-    context = {
-        'products': products,
-        'blogs': blogs
-    }
-    return render(request, "store/index.html", context)
+def product_inquiry(request):
+    if request.method == "POST":
+        product = get_object_or_404(Product, id=request.POST.get("product_id"))
+
+        ProductInquiry.objects.create(
+            product=product,
+            name=request.POST.get("name"),
+            mobile=request.POST.get("mobile"),
+            quantity=request.POST.get("quantity"),
+            message=request.POST.get("message"),
+        )
+
+        messages.success(request, "Your inquiry has been submitted successfully!")
+
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+
+    return redirect("/")
 
 
 def blog_detail(request, blog_id):

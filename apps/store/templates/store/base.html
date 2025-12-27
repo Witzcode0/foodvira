@@ -86,10 +86,10 @@
             </nav>
 
             <!-- Inquiry Button -->
-            <button onclick="openModal()"
+            <a href="{% url 'contact' %}"
                 class="inline-flex items-center bg-green-600 text-white px-5 py-2 mt-2 rounded-full hover:bg-green-700 transition">
-                Send Inquiry
-            </button>
+                Contact Us
+            </a>
         </div>
         <!-- Modal Background -->
         <div id="inquiryModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
@@ -154,69 +154,75 @@
     {% endblock %}
     <hr>
     <footer class="text-gray-600 body-font bg-gray-50">
-    <div class="container px-5 py-24 mx-auto">
-        <div class="flex flex-wrap md:text-left text-center -mx-4">
+        <div class="container px-5 py-24 mx-auto">
+            <div class="flex flex-wrap md:text-left text-center -mx-4">
 
-            <!-- Column 1: About FoodVira -->
-            <div class="lg:w-1/4 md:w-1/2 w-full px-4 mb-8 md:mb-0">
-                <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">ABOUT FOODVIRA</h2>
-                <p class="text-gray-600 text-sm">
-                    FoodVira delivers delicious dishes crafted with fresh ingredients and love. Experience the flavors you crave, straight to your doorstep.
+                <!-- Column 1: About FoodVira -->
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4 mb-8 md:mb-0">
+                    <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">ABOUT FOODVIRA</h2>
+                    <p class="text-gray-600 text-sm">
+                        FoodVira delivers delicious dishes crafted with fresh ingredients and love. Experience the
+                        flavors you crave, straight to your doorstep.
+                    </p>
+                </div>
+
+                <!-- Column 2: Pages -->
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4 mb-8 md:mb-0">
+                    <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">PAGES</h2>
+                    <nav class="list-none mb-10">
+                        <li><a href="{% url 'index' %}" class="text-gray-600 hover:text-gray-800">Home</a></li>
+                        <li><a href="{% url 'products' %}" class="text-gray-600 hover:text-gray-800">Products</a></li>
+                        <li><a href="{% url 'blog' %}" class="text-gray-600 hover:text-gray-800">Blogs</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-gray-600 hover:text-gray-800">Contact Us</a></li>
+                    </nav>
+                </div>
+
+                <!-- Column 3: Selling On Platforms -->
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4 mb-8 md:mb-0">
+                    <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">WE ARE SELLING ON</h2>
+                    <nav class="list-none mb-10">
+                        <li><a href="https://www.amazon.in" target="_blank"
+                                class="text-gray-600 hover:text-gray-800">Amazon</a></li>
+                        <li><a href="https://www.flipkart.com" target="_blank"
+                                class="text-gray-600 hover:text-gray-800">Flipkart</a></li>
+                        <li><a href="https://www.swiggy.com" target="_blank"
+                                class="text-gray-600 hover:text-gray-800">Swiggy</a></li>
+                        <li><a href="https://www.zomato.com" target="_blank"
+                                class="text-gray-600 hover:text-gray-800">Zomato</a></li>
+                    </nav>
+                </div>
+
+                <!-- Column 4: Contact Details -->
+                <div class="lg:w-1/4 md:w-1/2 w-full px-4">
+                    <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CONTACT</h2>
+                    <p class="text-gray-600 text-sm mb-2">FoodVira Pvt Ltd</p>
+                    <p class="text-gray-600 text-sm mb-2">123 Food Street, Mumbai, India</p>
+                    <p class="text-gray-600 text-sm mb-2">Email: info@foodvira.com</p>
+                    <p class="text-gray-600 text-sm">Phone: +91 9876543210</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="bg-gray-100">
+            <div class="container px-5 py-6 mx-auto flex flex-col sm:flex-row items-center justify-between">
+                <a class="flex title-font font-medium items-center text-gray-900 mb-4 sm:mb-0">
+                    <img src="{% static 'store/images/logo.png' %}" width="80" alt="FoodVira Logo">
+                </a>
+                <p class="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">© 2025 FoodVira —
+                    <a href="https://twitter.com/knyttneve" target="_blank"
+                        class="text-gray-600 ml-1">@BharatFuturistAi</a>
                 </p>
+                <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+                    <a class="text-gray-500 hover:text-gray-700"><i class="fab fa-facebook-f"></i></a>
+                    <a class="ml-3 text-gray-500 hover:text-gray-700"><i class="fab fa-twitter"></i></a>
+                    <a class="ml-3 text-gray-500 hover:text-gray-700"><i class="fab fa-instagram"></i></a>
+                    <a class="ml-3 text-gray-500 hover:text-gray-700"><i class="fab fa-linkedin-in"></i></a>
+                </span>
             </div>
-
-            <!-- Column 2: Pages -->
-            <div class="lg:w-1/4 md:w-1/2 w-full px-4 mb-8 md:mb-0">
-                <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">PAGES</h2>
-                <nav class="list-none mb-10">
-                    <li><a href="{% url 'index' %}" class="text-gray-600 hover:text-gray-800">Home</a></li>
-                    <li><a href="{% url 'products' %}" class="text-gray-600 hover:text-gray-800">Products</a></li>
-                    <li><a href="{% url 'blog' %}" class="text-gray-600 hover:text-gray-800">Blogs</a></li>
-                    <li><a href="{% url 'contact' %}" class="text-gray-600 hover:text-gray-800">Contact Us</a></li>
-                </nav>
-            </div>
-
-            <!-- Column 3: Selling On Platforms -->
-            <div class="lg:w-1/4 md:w-1/2 w-full px-4 mb-8 md:mb-0">
-                <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">WE ARE SELLING ON</h2>
-                <nav class="list-none mb-10">
-                    <li><a href="https://www.amazon.in" target="_blank" class="text-gray-600 hover:text-gray-800">Amazon</a></li>
-                    <li><a href="https://www.flipkart.com" target="_blank" class="text-gray-600 hover:text-gray-800">Flipkart</a></li>
-                    <li><a href="https://www.swiggy.com" target="_blank" class="text-gray-600 hover:text-gray-800">Swiggy</a></li>
-                    <li><a href="https://www.zomato.com" target="_blank" class="text-gray-600 hover:text-gray-800">Zomato</a></li>
-                </nav>
-            </div>
-
-            <!-- Column 4: Contact Details -->
-            <div class="lg:w-1/4 md:w-1/2 w-full px-4">
-                <h2 class="title-font font-medium text-gray-900 tracking-widest text-sm mb-3">CONTACT</h2>
-                <p class="text-gray-600 text-sm mb-2">FoodVira Pvt Ltd</p>
-                <p class="text-gray-600 text-sm mb-2">123 Food Street, Mumbai, India</p>
-                <p class="text-gray-600 text-sm mb-2">Email: info@foodvira.com</p>
-                <p class="text-gray-600 text-sm">Phone: +91 9876543210</p>
-            </div>
-
         </div>
-    </div>
-
-    <!-- Footer Bottom -->
-    <div class="bg-gray-100">
-        <div class="container px-5 py-6 mx-auto flex flex-col sm:flex-row items-center justify-between">
-            <a class="flex title-font font-medium items-center text-gray-900 mb-4 sm:mb-0">
-                <img src="{% static 'store/images/logo.png' %}" width="80" alt="FoodVira Logo">
-            </a>
-            <p class="text-sm text-gray-500 sm:ml-6 sm:mt-0 mt-4">© 2025 FoodVira — 
-                <a href="https://twitter.com/knyttneve" target="_blank" class="text-gray-600 ml-1">@BharatFuturistAi</a>
-            </p>
-            <span class="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
-                <a class="text-gray-500 hover:text-gray-700"><i class="fab fa-facebook-f"></i></a>
-                <a class="ml-3 text-gray-500 hover:text-gray-700"><i class="fab fa-twitter"></i></a>
-                <a class="ml-3 text-gray-500 hover:text-gray-700"><i class="fab fa-instagram"></i></a>
-                <a class="ml-3 text-gray-500 hover:text-gray-700"><i class="fab fa-linkedin-in"></i></a>
-            </span>
-        </div>
-    </div>
-</footer>
+    </footer>
 
     <script>
         function openModal() {

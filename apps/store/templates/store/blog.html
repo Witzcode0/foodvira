@@ -59,6 +59,51 @@ Blog
   {% endfor %}
 </div>
 
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="flex justify-center mt-12">
+  <nav class="flex items-center gap-2 flex-wrap">
+
+    <!-- Previous -->
+    {% if page_obj.has_previous %}
+    <a
+      href="?page={{ page_obj.previous_page_number }}"
+      class="px-4 py-2 border rounded-lg hover:bg-gray-100"
+    >
+      Previous
+    </a>
+    {% endif %}
+
+    <!-- Page Numbers -->
+    {% for num in page_obj.paginator.page_range %}
+      {% if num == page_obj.number %}
+        <span class="px-4 py-2 bg-green-600 text-white rounded-lg">
+          {{ num }}
+        </span>
+      {% else %}
+        <a
+          href="?page={{ num }}"
+          class="px-4 py-2 border rounded-lg hover:bg-gray-100"
+        >
+          {{ num }}
+        </a>
+      {% endif %}
+    {% endfor %}
+
+    <!-- Next -->
+    {% if page_obj.has_next %}
+    <a
+      href="?page={{ page_obj.next_page_number }}"
+      class="px-4 py-2 border rounded-lg hover:bg-gray-100"
+    >
+      Next
+    </a>
+    {% endif %}
+
+  </nav>
+</div>
+{% endif %}
+
+
   </div>
 </section>
 {% endblock %}
